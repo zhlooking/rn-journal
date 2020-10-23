@@ -1,9 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import React from 'react'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from 'react-apollo'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import { createStackNavigator } from 'react-navigation'
 import navStyle from './style/navStyle'
 import Post from './Post'
+// import Movies from './Movies'
+import AllUsers from './Users'
 
+
+export default class Wrapper extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.client = new ApolloClient({
+      // uri: "http://localhost:5000/graphql",
+      // uri: "http://localhost:4466"
+      uri: "http://115.159.117.60:4000/"
+    });
+  }
+
+  render() {
+    return (
+      <ApolloProvider client={this.client}>
+        <CustomizedStackNavigation />
+      </ApolloProvider>
+    )
+  }
+}
 
 class App extends React.Component {
   static navigationOptions = {
@@ -20,6 +44,7 @@ class App extends React.Component {
       <View style={styles.container}>
         <Text>Hello!</Text>
         <Button onPress={this.handleGoToPost} title='Go to Post' />
+        <AllUsers /> 
       </View>
     );
   }
@@ -34,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default createStackNavigator({
+const CustomizedStackNavigation = createStackNavigator({
   Home: {
     screen: App,
   },
